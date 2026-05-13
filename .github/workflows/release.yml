@@ -11,6 +11,10 @@ permissions:
 jobs:
   deploy-vercel:
     runs-on: ubuntu-latest
+    env:
+     
+      VITE_API_URL: ${{ secrets.VITE_API_URL }}
+
     steps:
       - uses: actions/checkout@v4
 
@@ -19,13 +23,18 @@ jobs:
           node-version: 20
 
       - run: npm ci
-      - run: npm run build
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
       - name: Deploy to Vercel (Production)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
         run: |
           npm i -g vercel@latest
           vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
