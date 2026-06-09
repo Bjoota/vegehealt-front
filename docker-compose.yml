@@ -1,0 +1,5 @@
+services:
+  frontend:
+    build: .
+    ports:
+      - "8080:80" # Mapeia a porta 8080 da sua máquina para a 80 do Nginx
